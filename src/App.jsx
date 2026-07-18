@@ -1,18 +1,24 @@
 import { useState } from "react";
+
 import Intro from "./components/intro/Intro";
 import Hero from "./components/hero/Hero";
 
 function App() {
-  const [introFinished, setIntroFinished] = useState(false);
+  const [phase, setPhase] = useState("idle");
 
   return (
     <>
-      <main>
-        <Hero />
-      </main>
+      {/* O Home já existe atrás da Intro */}
+      <Hero />
 
-      {!introFinished && (
-        <Intro onFinish={() => setIntroFinished(true)} />
+      {phase !== "finished" && (
+        <Intro
+          phase={phase}
+          onStart={() => setPhase("falling")}
+          onPixelsFinished={() => setPhase("covering")}
+          onCurtainCovered={() => setPhase("revealing")}
+          onFinish={() => setPhase("finished")}
+        />
       )}
     </>
   );
