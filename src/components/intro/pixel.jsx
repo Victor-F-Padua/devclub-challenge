@@ -1,88 +1,134 @@
 import { motion } from "motion/react";
 
-const PIXEL_SIZE = 10;
-const TARGET_GAP = 11;
-
-const TARGET_ORIGIN_X = -13;
-const TARGET_ORIGIN_Y = 170;
-
 function Pixel({
   row,
   column,
   index,
-  target,
-  shouldBuild,
+  totalColumns,
+  shouldFall,
+  canComplete,
+  isLast,
+  onComplete,
 }) {
-  const originalX = column * PIXEL_SIZE;
-  const originalY = row * PIXEL_SIZE;
+  const centerColumn = (totalColumns - 1) / 2;
 
-  const targetX =
-    TARGET_ORIGIN_X + target.column * TARGET_GAP;
+  const horizontalRatio =
+    (column - centerColumn) / centerColumn;
 
-  const targetY =
-    TARGET_ORIGIN_Y + target.row * TARGET_GAP;
+  /*
+    Espalhamento horizontal leve.
 
-  const landingX = targetX - originalX;
-  const landingY = targetY - originalY;
+    Pixels da esquerda seguem um pouco para a esquerda.
+    Pixels da direita seguem um pouco para a direita.
+  */
+  const finalX =
+    horizontalRatio * 170 +
+    ((index % 3) - 1) * 14;
 
-  const burstX = ((index % 7) - 3) * 8;
-  const burstY = -22 - (index % 4) * 7;
+  /*
+    A logo termina aproximadamente em 44% da tela.
 
-  const rotationDirection =
-    index % 2 === 0 ? 1 : -1;
+    Portanto, uma queda de cerca de 53% leva os pixels
+    até o limite inferior, sem deixá-los viajando
+    invisíveis abaixo da tela.
+  */
+  const finalY =
+    `${52 + (row % 4) * 1.5}vh`;
 
-  const rotation =
-    rotationDirection * (45 + (index % 5) * 18);
+  /*
+    Stagger pequeno.
 
+    Eles não caem todos juntos, mas também não existe
+    um intervalo grande entre o primeiro e o último.
+  */
   const delay =
-    0.52 +
-    target.row * 0.025 +
-    (index % 5) * 0.012;
+    0.72 + index * 0.0025;
+
+  function handleAnimationComplete() {
+    if (
+      shouldFall &&
+      canComplete &&
+      isLast
+    ) {
+      onComplete();
+    }
+  }
 
   return (
     <motion.span
       aria-hidden="true"
-      className="block h-[10px] w-[10px] bg-[#35E657]"
+      className="
+        block
+        h-[10px]
+        w-[10px]
+        bg-[#35E657]
+        will-change-transform
+      "
       style={{
         gridColumn: column + 1,
         gridRow: row + 1,
+        borderRadius: 0,
       }}
-      initial={{
-        opacity: 0,
-        scale: 0.6,
-        x: 0,
-        y: 0,
-      }}
+      initial={false}
       animate={
-        shouldBuild
+        shouldFall
           ? {
-              x: [0, burstX, landingX],
-              y: [0, burstY, landingY],
-              rotate: [0, rotation, 0],
-              scale: [1, 0.85, 1],
-              opacity: [1, 1, 1],
+              /*
+                Não existe mais um ponto intermediário.
+
+                O movimento vai diretamente da logo
+                até a parte inferior da tela.
+              */
+              x: finalX,
+              y: finalY,
+              scale: 2.6,
+
+              /*
+                O pixel fica completamente visível
+                durante quase toda a queda.
+              */
+              opacity: [1, 1, 0],
             }
           : {
               x: 0,
               y: 0,
-              rotate: 0,
               scale: 1,
               opacity: 1,
             }
       }
       transition={
-        shouldBuild
+        shouldFall
           ? {
-              duration: 1.4,
-              delay,
-              times: [0, 0.18, 1],
-              ease: ["easeOut", "easeIn"],
+              default: {
+                type: "tween",
+                duration: 2.05,
+                delay,
+
+                /*
+                  Começa controlado e ganha velocidade
+                  progressivamente, como uma queda.
+                */
+                ease: [0.45, 0, 1, 1],
+              },
+
+              opacity: {
+                duration: 2.05,
+                delay,
+
+                /*
+                  Só desaparece nos últimos 4%.
+                */
+                times: [0, 0.96, 1],
+                ease: "linear",
+              },
             }
           : {
-              duration: 0.45,
-              delay: index * 0.006,
+              duration: 0.3,
               ease: "easeOut",
             }
+      }
+      onAnimationComplete={
+        handleAnimationComplete
       }
     />
   );

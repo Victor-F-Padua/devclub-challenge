@@ -1,143 +1,132 @@
-import { useState } from "react";
 import { motion } from "motion/react";
 
 import LogoAnimation from "./LogoAnimation";
+import GreenCurtain from "./GreenCurtain";
 
-function Intro({ onFinish }) {
-  const [phase, setPhase] = useState("idle");
+function Intro({
+  phase,
+  onStart,
+  onPixelsFinished,
+  onCurtainCovered,
+  onFinish,
+}) {
+  const hasStarted = phase !== "idle";
+  const isFalling = phase === "falling";
 
-  const shouldBuild = phase !== "idle";
-  const isExiting = phase === "exiting";
+  const curtainIsActive = phase === "covering" || phase === "revealing";
 
   function handleStart() {
-    if (phase !== "idle") {
-      return;
-    }
-
-    setPhase("building");
-  }
-
-  function handleBuildComplete() {
-    if (phase === "building") {
-      setPhase("exiting");
-    }
-  }
-
-  function handleIntroAnimationComplete() {
-    if (phase === "exiting") {
-      onFinish();
+    if (phase === "idle") {
+      onStart();
     }
   }
 
   return (
-    <motion.section
-      className="fixed inset-0 z-50 overflow-hidden bg-[#000A23]"
-      initial={{
-        opacity: 1,
-      }}
-      animate={{
-        opacity: isExiting ? 0 : 1,
-      }}
-      transition={{
-        duration: isExiting ? 0.45 : 0,
-        ease: "easeInOut",
-      }}
-      onAnimationComplete={handleIntroAnimationComplete}
-    >
-      {/* Brilho do fundo */}
-      <div
+    <section className="fixed inset-0 z-50 overflow-hidden">
+      {/* Fundo azul da Intro */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-0 z-0 bg-[#000A23]"
+        initial={false}
+        animate={{
+          /*
+            Quando o painel verde já cobriu tudo,
+            removemos o fundo para deixar o Hero atrás.
+          */
+          opacity: phase === "revealing" ? 0 : 1,
+        }}
+        transition={{
+          duration: 0,
+        }}
+      />
+
+      {/* Brilho roxo do fundo */}
+      <motion.div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
           inset-0
-          bg-[radial-gradient(circle_at_top,_rgba(105,0,155,0.22),_transparent_46%)]
+          z-0
+          bg-[radial-gradient(circle_at_top,_rgba(124,42,232,0.2),_transparent_45%)]
         "
+        animate={{
+          opacity: hasStarted ? 0 : 1,
+        }}
+        transition={{
+          duration: 0.4,
+        }}
       />
 
       {/* Logo */}
       <motion.div
-        className="absolute z-10 flex flex-col items-center"
-        style={{
-          left: "50%",
-        }}
-        initial={{
-          top: "28%",
-          x: "-50%",
-          y: "-50%",
-        }}
+        className="
+          absolute
+          left-1/2
+          z-20
+          flex
+          -translate-x-1/2
+          -translate-y-1/2
+          flex-col
+          items-center
+        "
+        initial={false}
         animate={{
-          top: shouldBuild ? "22%" : "28%",
-          x: "-50%",
-          y: "-50%",
+          top: hasStarted ? "40%" : "28%",
+          scale: isFalling ? 1.15 : 1,
+          opacity: curtainIsActive ? 0 : 1,
         }}
         transition={{
-          duration: 0.5,
-          ease: "easeInOut",
+          top: {
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          },
+
+          scale: {
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          },
+
+          opacity: {
+            duration: 0.15,
+          },
         }}
       >
-        <LogoAnimation
-          phase={phase}
-          onBuildComplete={handleBuildComplete}
-        />
+        <LogoAnimation phase={phase} onFallComplete={onPixelsFinished} />
 
         <motion.p
           className="mt-4 text-2xl font-bold text-white"
-          initial={{
-            opacity: 0,
-            y: 20,
+          animate={{
+            opacity: hasStarted ? 0 : 1,
+            y: hasStarted ? 12 : 0,
           }}
-          animate={
-            shouldBuild
-              ? {
-                  opacity: 0,
-                  y: 12,
-                }
-              : {
-                  opacity: 1,
-                  y: 0,
-                }
-          }
           transition={{
-            duration: 0.35,
-            delay: shouldBuild ? 0 : 0.2,
+            duration: 0.3,
           }}
         >
           DevClub
         </motion.p>
       </motion.div>
 
-      {/* Conteúdo */}
+      {/* Título, parágrafo e botão */}
       <motion.div
         className="
           absolute
           inset-x-0
           top-[58%]
-          z-10
+          z-20
           flex
           flex-col
           items-center
           px-6
           text-center
         "
-        initial={{
-          opacity: 0,
-          y: 30,
+        animate={{
+          opacity: hasStarted ? 0 : 1,
+          y: hasStarted ? 35 : 0,
         }}
-        animate={
-          shouldBuild
-            ? {
-                opacity: 0,
-                y: 30,
-              }
-            : {
-                opacity: 1,
-                y: 0,
-              }
-        }
         transition={{
-          duration: shouldBuild ? 0.3 : 0.7,
-          delay: shouldBuild ? 0 : 0.25,
+          duration: 0.35,
           ease: "easeOut",
         }}
       >
@@ -152,7 +141,7 @@ function Intro({ onFinish }) {
         <motion.button
           type="button"
           onClick={handleStart}
-          disabled={shouldBuild}
+          disabled={hasStarted}
           className="
             mt-8
             rounded-full
@@ -164,14 +153,14 @@ function Intro({ onFinish }) {
             disabled:cursor-default
           "
           whileHover={
-            shouldBuild
+            hasStarted
               ? undefined
               : {
                   scale: 1.05,
                 }
           }
           whileTap={
-            shouldBuild
+            hasStarted
               ? undefined
               : {
                   scale: 0.96,
@@ -181,7 +170,14 @@ function Intro({ onFinish }) {
           Começar minha jornada
         </motion.button>
       </motion.div>
-    </motion.section>
+
+      {/* Um único painel verde */}
+      <GreenCurtain
+        phase={phase}
+        onCovered={onCurtainCovered}
+        onFinish={onFinish}
+      />
+    </section>
   );
 }
 
