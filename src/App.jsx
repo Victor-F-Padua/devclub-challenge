@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Intro from "./components/intro/Intro";
+import Navbar from "./components/navbar/Navbar";
 import Hero from "./components/hero/Hero";
 
 function App() {
@@ -8,8 +9,11 @@ function App() {
 
   return (
     <>
-      {/* O Home já existe atrás da Intro */}
-      <Hero />
+      <Navbar />
+
+      <main>
+        <Hero />
+      </main>
 
       {phase !== "finished" && (
         <Intro
