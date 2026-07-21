@@ -10,16 +10,20 @@ const navigationLinks = [
     href: "#jornada",
   },
   {
-    label: "Cursos",
+    label: "Formações",
     href: "#cursos",
   },
   {
-    label: "Projetos",
-    href: "#projetos",
+    label: "Alunos",
+    href: "#alunos",
   },
   {
     label: "Mentores",
     href: "#mentores",
+  },
+  {
+    label: "Comunidade",
+    href: "#comunidade",
   },
 ];
 

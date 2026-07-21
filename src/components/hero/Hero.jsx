@@ -1,5 +1,6 @@
 import { ArrowRight, CodeXml } from "lucide-react";
 
+
 import heroVideo from "../../assets/video/display-vscode.mp4";
 
 function Hero() {
@@ -10,11 +11,12 @@ function Hero() {
         relative
         flex
         min-h-screen
+        lg:min-h-[78svh]
         items-center
         overflow-hidden
         bg-[#000A23]
         px-6
-        pb-20
+        pb-14
         pt-32
         lg:px-8
       "
@@ -83,7 +85,6 @@ function Hero() {
             "
           >
             <CodeXml size={16} />
-
             Aprendizado que vira projeto
           </div>
 
@@ -100,9 +101,7 @@ function Hero() {
             "
           >
             Do primeiro código à primeira{" "}
-            <span className="text-[#35E657]">
-              oportunidade.
-            </span>
+            <span className="text-[#35E657]">oportunidade.</span>
           </h1>
 
           <p
@@ -115,8 +114,8 @@ function Hero() {
               sm:text-lg
             "
           >
-            Aprenda com prática, mentoria e projetos que aproximam você do
-            mercado de programação.
+            No DevClub, aprendizado não é só conteúdo. É direção, prática,
+            mentoria e construção de oportunidades.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -212,9 +211,7 @@ function Hero() {
                 <span className="h-3 w-3 rounded-full bg-green-400" />
               </div>
 
-              <span className="text-xs text-slate-400">
-                DevClubProject.jsx
-              </span>
+              <span className="text-xs text-slate-400">DevClubProject.jsx</span>
 
               <div className="w-14" />
             </div>
@@ -230,7 +227,6 @@ function Hero() {
                 aria-label="Código sendo escrito em um editor"
               >
                 <source src={heroVideo} type="video/mp4" />
-
                 Seu navegador não suporta vídeos HTML.
               </video>
 
@@ -279,6 +275,7 @@ function Hero() {
           </div>
         </div>
       </div>
+
     </section>
   );
 }

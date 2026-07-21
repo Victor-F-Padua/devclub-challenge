@@ -6,18 +6,21 @@ const courses = [
     title: "Full Stack",
     description:
       "HTML, CSS, JavaScript, React, Node.js e as ferramentas usadas no mercado.",
+    href: "LINK_OFICIAL_DA_FORMACAO",
   },
   {
     category: "Especialização",
     title: "React na prática",
     description:
       "Construa interfaces modernas, responsivas e conectadas a aplicações reais.",
+    href: "LINK_OFICIAL_DA_FORMACAO",
   },
   {
     category: "Desenvolvimento profissional",
     title: "Carreira Dev",
     description:
       "Portfólio, GitHub, currículo e preparação para processos seletivos.",
+    href: "LINK_OFICIAL_DA_FORMACAO",
   },
 ];
 
@@ -79,6 +82,9 @@ function Courses() {
                   transition-colors
                   hover:text-[#35E657]
                 "
+                href={course.href}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Conhecer a trilha →
               </a>
