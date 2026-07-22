@@ -11,7 +11,7 @@ const navigationLinks = [
   },
   {
     label: "Formações",
-    href: "#cursos",
+    href: "#formações",
   },
   {
     label: "Alunos",
