@@ -1,6 +1,5 @@
 import { ArrowRight, CodeXml } from "lucide-react";
 
-
 import heroVideo from "../../assets/video/display-vscode.mp4";
 
 function Hero() {
@@ -11,17 +10,17 @@ function Hero() {
         relative
         flex
         min-h-screen
-        lg:min-h-[78svh]
         items-center
         overflow-hidden
         bg-[#000A23]
         px-6
-        pb-14
+        pb-16
         pt-32
+        lg:min-h-[78svh]
         lg:px-8
       "
     >
-      {/* Brilhos do fundo */}
+      {/* Brilho verde */}
       <div
         aria-hidden="true"
         className="
@@ -37,6 +36,7 @@ function Hero() {
         "
       />
 
+      {/* Brilho roxo */}
       <div
         aria-hidden="true"
         className="
@@ -59,13 +59,14 @@ function Hero() {
           mx-auto
           grid
           w-full
-          max-w-7xl
+          max-w-[1400px]
           items-center
-          gap-16
-          lg:grid-cols-[1.05fr_0.95fr]
+          gap-14
+          lg:grid-cols-[0.95fr_1.05fr]
+          xl:gap-20
         "
       >
-        {/* Conteúdo esquerdo */}
+        {/* Conteúdo */}
         <div>
           <div
             className="
@@ -84,7 +85,7 @@ function Hero() {
               text-[#35E657]
             "
           >
-            <CodeXml size={16} />
+            <CodeXml aria-hidden="true" size={16} />
             Aprendizado que vira projeto
           </div>
 
@@ -97,11 +98,14 @@ function Hero() {
               tracking-tight
               text-white
               sm:text-5xl
-              lg:text-7xl
+              lg:text-6xl
+              xl:text-7xl
             "
           >
             Do primeiro código à primeira{" "}
-            <span className="text-[#35E657]">oportunidade.</span>
+            <span className="text-[#35E657]">
+              oportunidade.
+            </span>
           </h1>
 
           <p
@@ -136,14 +140,19 @@ function Hero() {
                 duration-200
                 hover:-translate-y-1
                 hover:shadow-[0_0_30px_rgba(53,230,87,0.28)]
+                focus-visible:outline-none
+                focus-visible:ring-2
+                focus-visible:ring-[#35E657]
+                focus-visible:ring-offset-2
+                focus-visible:ring-offset-[#000A23]
               "
             >
               Explorar a jornada
-              <ArrowRight size={18} />
+              <ArrowRight aria-hidden="true" size={18} />
             </a>
 
             <a
-              href="#cursos"
+              href="#formacoes"
               className="
                 inline-flex
                 items-center
@@ -161,21 +170,35 @@ function Hero() {
                 duration-200
                 hover:border-white/30
                 hover:bg-white/10
+                focus-visible:outline-none
+                focus-visible:ring-2
+                focus-visible:ring-[#35E657]
+                focus-visible:ring-offset-2
+                focus-visible:ring-offset-[#000A23]
               "
             >
-              Conhecer os cursos
+              Conhecer as formações
             </a>
           </div>
         </div>
 
-        {/* Painel visual */}
-        <div className="relative mx-auto w-full max-w-2xl">
+        {/* Painel de vídeo */}
+        <div
+          className="
+            relative
+            mx-auto
+            w-full
+            max-w-2xl
+            lg:max-w-none
+          "
+        >
           <div
             aria-hidden="true"
             className="
+              pointer-events-none
               absolute
-              inset-10
-              rounded-full
+              inset-8
+              rounded-[32px]
               bg-purple-600/25
               blur-[100px]
             "
@@ -188,85 +211,129 @@ function Hero() {
               rounded-2xl
               border
               border-white/10
-              bg-[#07112D]
-              shadow-[0_30px_100px_rgba(0,0,0,0.45)]
+              bg-[#050914]
+              shadow-[0_35px_110px_rgba(0,0,0,0.5)]
+              transition-all
+              duration-500
+              hover:border-[#35E657]/30
+              hover:shadow-[0_35px_120px_rgba(53,230,87,0.08)]
             "
           >
-            {/* Barra superior do editor */}
             <div
+              aria-hidden="true"
               className="
-                flex
-                h-12
-                items-center
-                justify-between
-                border-b
-                border-white/10
-                bg-white/[0.03]
-                px-4
+                pointer-events-none
+                absolute
+                inset-x-0
+                top-0
+                z-20
+                h-[2px]
+                bg-gradient-to-r
+                from-transparent
+                via-[#35E657]/80
+                to-transparent
               "
+            />
+
+            <video
+              aria-hidden="true"
+              className="
+                block
+                aspect-video
+                w-full
+                bg-[#050914]
+                object-cover
+              "
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
             >
-              <div className="flex gap-2">
-                <span className="h-3 w-3 rounded-full bg-red-400" />
-                <span className="h-3 w-3 rounded-full bg-yellow-400" />
-                <span className="h-3 w-3 rounded-full bg-green-400" />
-              </div>
+              <source src={heroVideo} type="video/mp4" />
 
-              <span className="text-xs text-slate-400">DevClubProject.jsx</span>
+              Seu navegador não suporta vídeos HTML.
+            </video>
 
-              <div className="w-14" />
-            </div>
+            <div
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-[#000A23]/25
+                via-transparent
+                to-transparent
+              "
+            />
 
-            <div className="relative aspect-video overflow-hidden">
-              <video
-                className="h-full w-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="Código sendo escrito em um editor"
-              >
-                <source src={heroVideo} type="video/mp4" />
-                Seu navegador não suporta vídeos HTML.
-              </video>
-
-              <div
-                aria-hidden="true"
-                className="
-                  pointer-events-none
-                  absolute
-                  inset-0
-                  bg-gradient-to-t
-                  from-[#000A23]/35
-                  via-transparent
-                  to-transparent
-                "
-              />
-            </div>
+            <div
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute
+                inset-x-0
+                top-0
+                h-16
+                bg-gradient-to-b
+                from-white/[0.025]
+                to-transparent
+              "
+            />
           </div>
 
-          {/* Elemento decorativo */}
+          {/* Status */}
           <div
             className="
               absolute
               -bottom-5
-              -left-5
+              left-6
               hidden
               rounded-xl
               border
               border-[#35E657]/25
-              bg-[#07112D]/90
+              bg-[#07112D]/95
               px-5
               py-4
-              shadow-xl
-              backdrop-blur-md
+              shadow-[0_18px_50px_rgba(0,0,0,0.4)]
+              backdrop-blur-xl
               sm:block
             "
           >
-            <p className="text-xs text-slate-400">Status do projeto</p>
+            <p className="text-xs text-slate-400">
+              Status do projeto
+            </p>
 
-            <div className="mt-1 flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#35E657]" />
+            <div className="mt-1.5 flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    inline-flex
+                    h-full
+                    w-full
+                    animate-ping
+                    rounded-full
+                    bg-[#35E657]
+                    opacity-40
+                    motion-reduce:animate-none
+                  "
+                />
+
+                <span
+                  aria-hidden="true"
+                  className="
+                    relative
+                    inline-flex
+                    h-2.5
+                    w-2.5
+                    rounded-full
+                    bg-[#35E657]
+                  "
+                />
+              </span>
 
               <span className="text-sm font-semibold text-white">
                 Construindo o futuro
@@ -275,7 +342,6 @@ function Hero() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

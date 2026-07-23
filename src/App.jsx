@@ -1,36 +1,37 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import Intro from "./components/intro/Intro";
 import Navbar from "./components/navbar/Navbar";
 import Hero from "./components/hero/Hero";
 import CodeStream from "./components/code-stream/CodeStream";
-
 import About from "./components/about/About";
-import Students from "./components/students/Students";
-import Companies from "./components/companies/Companies";
-import Tutors from "./components/tutors/Tutors";
 import Courses from "./components/courses/Courses";
+import Students from "./components/students/Students";
+import Tutors from "./components/tutors/Tutors";
+import Companies from "./components/companies/Companies";
 import Testimonials from "./components/testimonials/Testimonials";
 import Cta from "./components/cta/Cta";
 import Footer from "./components/footer/Footer";
+import SectionTransition from "./components/ui/SectionTransition";
 
 function App() {
-  const [phase, setPhase] =
-    useState("idle");
+  const [phase, setPhase] = useState("idle");
 
   useEffect(() => {
     const body = document.body;
-    const html =
-      document.documentElement;
+    const html = document.documentElement;
+    const introIsActive = phase !== "finished";
 
-    const introIsActive =
-      phase !== "finished";
+    const previousBodyOverflow = body.style.overflow;
+    const previousHtmlOverflow = html.style.overflow;
+    const previousTouchAction = body.style.touchAction;
 
     if (phase === "idle") {
-      window.scrollTo(0, 0);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
     }
 
     if (introIsActive) {
@@ -44,9 +45,9 @@ function App() {
     }
 
     return () => {
-      body.style.overflow = "";
-      html.style.overflow = "";
-      body.style.touchAction = "";
+      body.style.overflow = previousBodyOverflow;
+      html.style.overflow = previousHtmlOverflow;
+      body.style.touchAction = previousTouchAction;
     };
   }, [phase]);
 
@@ -54,37 +55,38 @@ function App() {
     <>
       <Navbar />
 
+      <main>
+        <Hero />
+        <CodeStream />
+        <About />
 
-<main>
-  <Hero />
-  <CodeStream />
-  <About />
-  <Courses />
-  <Students />
-  <Tutors />
-  <Companies />
-  <Testimonials />
-  <Cta />
-</main>
+        <SectionTransition text="// aprender → construir → evoluir" />
 
+        <Courses />
+        <Students />
+
+        <SectionTransition text="// projeto → feedback → oportunidade" />
+
+        <Tutors />
+        <Companies />
+        <Testimonials />
+
+        <SectionTransition
+          text={'git commit -m "começar uma nova jornada"'}
+        />
+
+        <Cta />
+      </main>
 
       <Footer />
 
       {phase !== "finished" && (
         <Intro
           phase={phase}
-          onStart={() =>
-            setPhase("falling")
-          }
-          onPixelsFinished={() =>
-            setPhase("covering")
-          }
-          onCurtainCovered={() =>
-            setPhase("revealing")
-          }
-          onFinish={() =>
-            setPhase("finished")
-          }
+          onStart={() => setPhase("falling")}
+          onPixelsFinished={() => setPhase("covering")}
+          onCurtainCovered={() => setPhase("revealing")}
+          onFinish={() => setPhase("finished")}
         />
       )}
     </>

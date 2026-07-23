@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 const codeSnippets = [
   "<h1>Eu sou programador</h1>",
@@ -16,20 +16,31 @@ function MarqueeRow({
   highlighted = false,
   duration = 24,
 }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  const horizontalMovement = reverse
+    ? ["-50%", "0%"]
+    : ["0%", "-50%"];
+
   return (
     <div className="overflow-hidden">
       <motion.div
         className="flex w-max will-change-transform"
-        animate={{
-          x: reverse
-            ? ["-50%", "0%"]
-            : ["0%", "-50%"],
-        }}
-        transition={{
-          duration,
-          ease: "linear",
-          repeat: Infinity,
-        }}
+        initial={false}
+        animate={
+          shouldReduceMotion
+            ? { x: 0 }
+            : { x: horizontalMovement }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : {
+                duration,
+                ease: "linear",
+                repeat: Infinity,
+              }
+        }
       >
         {[0, 1].map((groupIndex) => (
           <div
@@ -77,13 +88,11 @@ function CodeStream() {
         relative
         overflow-hidden
         bg-[#000A23]
-        px-0
         py-6
         md:py-7
       "
     >
       <div
-        aria-hidden="true"
         className="
           pointer-events-none
           absolute
@@ -108,20 +117,11 @@ function CodeStream() {
             "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
         }}
       >
-        <MarqueeRow
-          duration={34}
-          reverse
-        />
+        <MarqueeRow reverse duration={34} />
 
-        <MarqueeRow
-          highlighted
-          duration={25}
-        />
+        <MarqueeRow highlighted duration={25} />
 
-        <MarqueeRow
-          duration={38}
-          reverse
-        />
+        <MarqueeRow reverse duration={38} />
       </div>
     </section>
   );

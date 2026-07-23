@@ -10,37 +10,35 @@ function Intro({
   onCurtainCovered,
   onFinish,
 }) {
-  const hasStarted = phase !== "idle";
+  const isIdle = phase === "idle";
+  const hasStarted = !isIdle;
   const isFalling = phase === "falling";
-
-  const curtainIsActive = phase === "covering" || phase === "revealing";
+  const curtainIsActive =
+    phase === "covering" || phase === "revealing";
 
   function handleStart() {
-    if (phase === "idle") {
+    if (isIdle) {
       onStart();
     }
   }
 
   return (
-    <section className="fixed inset-0 z-50 overflow-hidden">
-      {/* Fundo azul da Intro */}
+    <section
+      aria-label="Introdução DevClub"
+      className="fixed inset-0 z-50 overflow-hidden"
+    >
+      {/* Fundo principal */}
       <motion.div
         aria-hidden="true"
         className="absolute inset-0 z-0 bg-[#000A23]"
         initial={false}
         animate={{
-          /*
-            Quando o painel verde já cobriu tudo,
-            removemos o fundo para deixar o Hero atrás.
-          */
           opacity: phase === "revealing" ? 0 : 1,
         }}
-        transition={{
-          duration: 0,
-        }}
+        transition={{ duration: 0 }}
       />
 
-      {/* Brilho roxo do fundo */}
+      {/* Brilho do fundo */}
       <motion.div
         aria-hidden="true"
         className="
@@ -50,15 +48,14 @@ function Intro({
           z-0
           bg-[radial-gradient(circle_at_top,_rgba(124,42,232,0.2),_transparent_45%)]
         "
+        initial={false}
         animate={{
           opacity: hasStarted ? 0 : 1,
         }}
-        transition={{
-          duration: 0.4,
-        }}
+        transition={{ duration: 0.4 }}
       />
 
-      {/* Logo */}
+      {/* Logo animada */}
       <motion.div
         className="
           absolute
@@ -81,34 +78,34 @@ function Intro({
             duration: 0.7,
             ease: [0.22, 1, 0.36, 1],
           },
-
           scale: {
             duration: 0.7,
             ease: [0.22, 1, 0.36, 1],
           },
-
           opacity: {
             duration: 0.15,
           },
         }}
       >
-        <LogoAnimation phase={phase} onFallComplete={onPixelsFinished} />
+        <LogoAnimation
+          phase={phase}
+          onFallComplete={onPixelsFinished}
+        />
 
         <motion.p
           className="mt-4 text-2xl font-bold text-white"
+          initial={false}
           animate={{
             opacity: hasStarted ? 0 : 1,
             y: hasStarted ? 12 : 0,
           }}
-          transition={{
-            duration: 0.3,
-          }}
+          transition={{ duration: 0.3 }}
         >
           DevClub
         </motion.p>
       </motion.div>
 
-      {/* Título, parágrafo e botão */}
+      {/* Conteúdo inicial */}
       <motion.div
         className="
           absolute
@@ -121,6 +118,7 @@ function Intro({
           px-6
           text-center
         "
+        initial={false}
         animate={{
           opacity: hasStarted ? 0 : 1,
           y: hasStarted ? 35 : 0,
@@ -171,7 +169,6 @@ function Intro({
         </motion.button>
       </motion.div>
 
-      {/* Um único painel verde */}
       <GreenCurtain
         phase={phase}
         onCovered={onCurtainCovered}

@@ -11,7 +11,7 @@ const navigationLinks = [
   },
   {
     label: "Formações",
-    href: "#formações",
+    href: "#formacoes",
   },
   {
     label: "Alunos",
@@ -20,6 +20,10 @@ const navigationLinks = [
   {
     label: "Mentores",
     href: "#mentores",
+  },
+  {
+    label: "Oportunidades",
+    href: "#empresas",
   },
   {
     label: "Comunidade",

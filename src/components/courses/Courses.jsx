@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
+import { motion } from "motion/react";
 
 import {
-  ArrowUpRight,
   Bot,
   BrainCircuit,
   ChartNoAxesColumnIncreasing,
@@ -18,8 +18,6 @@ import {
   SiReact,
 } from "react-icons/si";
 
-import { motion } from "motion/react";
-
 import SectionHeading from "../ui/SectionHeading";
 
 const courses = [
@@ -31,9 +29,6 @@ const courses = [
       "Uma jornada completa para desenvolver aplicações modernas, do front-end ao back-end.",
     details: "HTML • CSS • JavaScript • React • Node.js • Banco de dados",
     variant: "fullstack",
-
-    // Adicione a URL oficial quando encontrar:
-    href: null,
   },
   {
     number: "02",
@@ -43,7 +38,6 @@ const courses = [
       "Inteligência artificial aplicada à produtividade, criação e automação.",
     details: "IA • Prompts • Agentes • Automação",
     variant: "ai",
-    href: null,
   },
   {
     number: "03",
@@ -53,7 +47,6 @@ const courses = [
       "Análise e visualização de dados para transformar informações em decisões.",
     details: "Dados • Dashboards • Análise",
     variant: "data",
-    href: null,
   },
   {
     number: "04",
@@ -63,9 +56,6 @@ const courses = [
       "Fundamentos e ferramentas para construir interfaces modernas, responsivas e bem estruturadas.",
     details: "HTML • CSS • JavaScript",
     variant: "frontend",
-
-    // Adicione a URL oficial quando encontrar:
-    href: null,
   },
 ];
 
@@ -128,12 +118,38 @@ const fullStackTechnologies = [
 
 const frontendTechnologies = fullStackTechnologies.slice(0, 3);
 
+const dataBars = [
+  {
+    height: 34,
+    delay: 0,
+  },
+  {
+    height: 52,
+    delay: 0.15,
+  },
+  {
+    height: 43,
+    delay: 0.3,
+  },
+  {
+    height: 64,
+    delay: 0.45,
+  },
+];
+
 function TechnologyIcon({ technology, compact = false }) {
-  const { name, Icon, color, border, glow, glowStrong, delay } = technology;
+  const {
+    name,
+    Icon,
+    color,
+    border,
+    glow,
+    glowStrong,
+    delay,
+  } = technology;
 
   return (
     <motion.div
-      aria-label={name}
       title={name}
       animate={{
         y: [0, -7, 0],
@@ -182,6 +198,7 @@ function TechnologyIcon({ technology, compact = false }) {
       `}
     >
       <Icon
+        aria-hidden="true"
         size={compact ? 24 : 27}
         style={{
           color,
@@ -243,7 +260,11 @@ function FullStackVisual() {
       "
     >
       {fullStackTechnologies.map((technology) => (
-        <TechnologyIcon key={technology.name} technology={technology} compact />
+        <TechnologyIcon
+          key={technology.name}
+          technology={technology}
+          compact
+        />
       ))}
     </div>
   );
@@ -265,7 +286,10 @@ function FrontendVisual() {
       "
     >
       {frontendTechnologies.map((technology) => (
-        <TechnologyIcon key={technology.name} technology={technology} />
+        <TechnologyIcon
+          key={technology.name}
+          technology={technology}
+        />
       ))}
     </div>
   );
@@ -440,13 +464,6 @@ function AiVisual() {
 }
 
 function DataVisual() {
-  const bars = [
-    { height: 34, delay: 0 },
-    { height: 52, delay: 0.15 },
-    { height: 43, delay: 0.3 },
-    { height: 64, delay: 0.45 },
-  ];
-
   return (
     <div
       aria-hidden="true"
@@ -462,7 +479,6 @@ function DataVisual() {
         pt-7
       "
     >
-      {/* Escondido em celulares pequenos */}
       <motion.div
         animate={{
           y: [0, -6, 0],
@@ -497,10 +513,9 @@ function DataVisual() {
         <Database size={21} />
       </motion.div>
 
-      {/* Gráfico permanece visível em todas as telas */}
-      {bars.map((bar, index) => (
+      {dataBars.map((bar) => (
         <motion.span
-          key={index}
+          key={`${bar.height}-${bar.delay}`}
           animate={{
             y: [0, -6, 0],
             scaleY: [0.84, 1, 0.9, 1],
@@ -531,7 +546,6 @@ function DataVisual() {
         />
       ))}
 
-      {/* Escondido em celulares pequenos */}
       <motion.div
         animate={{
           y: [0, -7, 0],
@@ -575,36 +589,6 @@ function CourseVisual({ variant }) {
   }
 
   return <FrontendVisual />;
-}
-
-function CourseLink({ href }) {
-  if (!href) {
-    return null;
-  }
-
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="
-        mt-5
-        inline-flex
-        items-center
-        gap-2
-        self-start
-        text-sm
-        font-semibold
-        text-white
-        transition
-        duration-300
-        hover:text-[#35E657]
-      "
-    >
-      Conhecer formação
-      <ArrowUpRight size={16} />
-    </a>
-  );
 }
 
 function CourseCard({ course, index, className = "" }) {
@@ -710,8 +694,6 @@ function CourseCard({ course, index, className = "" }) {
         </p>
 
         <CourseVisual variant={course.variant} />
-
-        <CourseLink href={course.href} />
       </div>
     </motion.article>
   );
@@ -735,17 +717,27 @@ function Courses() {
     }
 
     const styles = window.getComputedStyle(track);
-    const gap = Number.parseFloat(styles.columnGap || styles.gap) || 16;
-    const cardWidth = firstCard.getBoundingClientRect().width + gap;
+    const gap =
+      Number.parseFloat(styles.columnGap || styles.gap) || 16;
 
-    const nextIndex = Math.round(track.scrollLeft / cardWidth);
+    const cardWidth =
+      firstCard.getBoundingClientRect().width + gap;
 
-    setActiveCourse(Math.max(0, Math.min(nextIndex, courses.length - 1)));
+    const nextIndex = Math.round(
+      track.scrollLeft / cardWidth,
+    );
+
+    const limitedIndex = Math.max(
+      0,
+      Math.min(nextIndex, courses.length - 1),
+    );
+
+    setActiveCourse(limitedIndex);
   }
 
   return (
     <section
-      id="cursos"
+      id="formacoes"
       className="
         relative
         scroll-mt-24
@@ -782,7 +774,7 @@ function Courses() {
           description="Formações e complementos para desenvolver habilidades, construir projetos e acompanhar as mudanças do mercado."
         />
 
-        {/* Indicação visível somente no celular */}
+        {/* Indicação exibida somente no celular */}
         <div
           className="
             mt-10
@@ -799,6 +791,7 @@ function Courses() {
           <span>Deslize para explorar</span>
 
           <motion.div
+            aria-hidden="true"
             animate={{
               x: [0, 7, 0],
             }}
@@ -808,7 +801,10 @@ function Courses() {
               ease: "easeInOut",
             }}
           >
-            <MoveRight size={18} className="text-[#35E657]" />
+            <MoveRight
+              size={18}
+              className="text-[#35E657]"
+            />
           </motion.div>
         </div>
 
@@ -817,21 +813,21 @@ function Courses() {
           ref={mobileTrackRef}
           onScroll={handleMobileScroll}
           className="
-    -mx-6
-    mt-4
-    flex
-    snap-x
-    snap-mandatory
-    gap-4
-    overflow-x-auto
-    scroll-smooth
-    px-[7%]
-    scroll-px-[7%]
-    pb-6
-    md:hidden
-    [scrollbar-width:none]
-    [&::-webkit-scrollbar]:hidden
-  "
+            -mx-6
+            mt-4
+            flex
+            snap-x
+            snap-mandatory
+            gap-4
+            overflow-x-auto
+            scroll-smooth
+            px-[7%]
+            scroll-px-[7%]
+            pb-6
+            md:hidden
+            [scrollbar-width:none]
+            [&::-webkit-scrollbar]:hidden
+          "
         >
           {courses.map((course, index) => (
             <CourseCard
@@ -845,6 +841,7 @@ function Courses() {
 
         {/* Indicadores do carrossel */}
         <div
+          aria-hidden="true"
           className="
             mt-1
             flex
