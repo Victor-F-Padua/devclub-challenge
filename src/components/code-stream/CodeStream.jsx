@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 
 const codeSnippets = [
   "<h1>Eu sou programador</h1>",
@@ -16,7 +16,6 @@ function MarqueeRow({
   highlighted = false,
   duration = 24,
 }) {
-  const shouldReduceMotion = useReducedMotion();
 
   const horizontalMovement = reverse
     ? ["-50%", "0%"]
@@ -27,20 +26,12 @@ function MarqueeRow({
       <motion.div
         className="flex w-max will-change-transform"
         initial={false}
-        animate={
-          shouldReduceMotion
-            ? { x: 0 }
-            : { x: horizontalMovement }
-        }
-        transition={
-          shouldReduceMotion
-            ? { duration: 0 }
-            : {
+        animate={{ x: horizontalMovement }}
+        transition={{ 
                 duration,
                 ease: "linear",
                 repeat: Infinity,
-              }
-        }
+              }}
       >
         {[0, 1].map((groupIndex) => (
           <div
