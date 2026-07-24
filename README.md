@@ -10,9 +10,9 @@ A proposta é apresentar formações, projetos, mentores, alunos, empresas e his
 
 ## Demonstração
 
-O endereço da versão publicada será adicionado após o deploy.
+**Site publicado:**
 
-**Em breve**
+[DevClub](https://devclub-challenge.vercel.app/)
 
 ---
 
@@ -148,7 +148,7 @@ A estrutura pode apresentar pequenas diferenças de acordo com a organização f
 Clone o repositório:
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone https://github.com/Victor-F-Padua/devclub-challenge.git
 ```
 
 Entre na pasta do projeto:
@@ -160,7 +160,7 @@ cd NOME_DA_PASTA
 Instale as dependências:
 
 ```bash
-npm install
+cd devclub-challenge
 ```
 
 Execute o ambiente de desenvolvimento:
@@ -241,4 +241,4 @@ Projeto criado como parte de um desafio prático de desenvolvimento front-end.
 
 ## Status
 
-Projeto finalizado e pronto para publicação.
+Projeto finalizado e publicado na Vercel.
