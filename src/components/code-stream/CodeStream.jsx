@@ -16,22 +16,21 @@ function MarqueeRow({
   highlighted = false,
   duration = 24,
 }) {
-
-  const horizontalMovement = reverse
-    ? ["-50%", "0%"]
-    : ["0%", "-50%"];
+  const startPosition = reverse ? "-50%" : "0%";
+  const endPosition = reverse ? "0%" : "-50%";
 
   return (
     <div className="overflow-hidden">
       <motion.div
         className="flex w-max will-change-transform"
-        initial={false}
-        animate={{ x: horizontalMovement }}
-        transition={{ 
-                duration,
-                ease: "linear",
-                repeat: Infinity,
-              }}
+        initial={{ x: startPosition }}
+        animate={{ x: endPosition }}
+        transition={{
+          duration,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop",
+        }}
       >
         {[0, 1].map((groupIndex) => (
           <div
@@ -109,9 +108,7 @@ function CodeStream() {
         }}
       >
         <MarqueeRow reverse duration={34} />
-
         <MarqueeRow highlighted duration={25} />
-
         <MarqueeRow reverse duration={38} />
       </div>
     </section>
