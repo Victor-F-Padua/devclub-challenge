@@ -154,13 +154,13 @@ git clone https://github.com/Victor-F-Padua/devclub-challenge.git
 Entre na pasta do projeto:
 
 ```bash
-cd NOME_DA_PASTA
+cd devclub-challenge
 ```
 
 Instale as dependências:
 
 ```bash
-cd devclub-challenge
+npm install
 ```
 
 Execute o ambiente de desenvolvimento:
